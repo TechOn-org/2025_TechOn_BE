@@ -1,0 +1,13 @@
+spring:
+  mvc:
+    pathmatch:
+          matching-strategy: ant_path_matcher
+app:
+  kakao:
+    rest-api-key: 4d0a7560edc72d30ac6350defe3e38eb
+  sbdc:
+    service-key: YQwbBiyJnnbh1WU53VA/0Cwg5gTtiteycbzzZ1UqPdsecrdJEFbV3vm7kn3eMk1prxWxTmp5QmztiHzywh5xJA==
+    base-url: https://apis.data.go.kr/B553077/api/open/sdsc2
+    rows: 100
+server:
+  port: 8080

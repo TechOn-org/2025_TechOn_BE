@@ -1,7 +1,22 @@
 spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3307/techon_maria_db?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: 8833
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MariaDBDialect
+        jdbc:
+          time_zone: Asia/Seoul
   mvc:
     pathmatch:
-          matching-strategy: ant_path_matcher
+      matching-strategy: ant_path_matcher
+
 app:
   kakao:
     rest-api-key: 4d0a7560edc72d30ac6350defe3e38eb

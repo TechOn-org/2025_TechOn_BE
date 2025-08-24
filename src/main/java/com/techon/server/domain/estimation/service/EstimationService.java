@@ -19,15 +19,52 @@ public class EstimationService {
     private final EstimationRepository estimationRepository;
 
     private static final Map<String, List<String>> SYN = new HashMap<>() {{
-        put("화면", List.of("디스플레이","lcd","액정","패널","스크린"));
-        put("깨짐", List.of("파손","크랙","금감","금","균열","깨졌"));
-        put("액정", List.of("lcd","디스플레이","패널"));
-        put("터치", List.of("터치불가","터치 안됨","유령터치","touch","터치오류"));
-        put("불량", List.of("고장","오류","문제","이상"));
-        put("줄감", List.of("줄 감","줄이감","줄 무늬","줄생김","줄간섭","라인생김"));
-        put("전원", List.of("부팅","전원불가","전원안켜짐","꺼짐"));
-        put("배터리", List.of("충전","전지","배터리수명","배터리빨리닳"));
-        put("소음", List.of("팬소음","냉각팬","쿨링","윙윙"));
+        put("화면", List.of(
+                "디스플레이","lcd","액정","패널","스크린",
+                "화면안나옴","화면 안나옴","블랙스크린","화이트스크린",
+                "번인","잔상","노이즈","멍","백화"
+        ));
+        put("깨짐", List.of(
+                "파손","크랙","금감","금","균열","깨졌",
+                "금가","금갔","찍힘","파손됨","깨져서","깨짐"
+        ));
+        put("액정", List.of(
+                "lcd","디스플레이","패널","유리",
+                "전면유리","프런트글라스","프론트글라스","glass"
+        ));
+        put("터치", List.of(
+                "터치불가","터치 안됨","유령터치","touch","터치오류",
+                "터치안돼","터치안되요","터치 먹통","터치지연","터치오작동","터치불량"
+        ));
+        put("불량", List.of(
+                "고장","오류","문제","이상",
+                "불안정","오작동","이슈","상태불량","지연"
+        ));
+        put("줄감", List.of(
+                "줄 감","줄이감","줄 무늬","줄생김","줄간섭","라인생김",
+                "가로줄","세로줄","줄나옴","화면줄",
+                "녹색줄","초록줄","빨간줄","보라줄","컬러줄"
+        ));
+        put("전원", List.of(
+                "부팅","전원불가","전원안켜짐","꺼짐",
+                "전원꺼짐","자동꺼짐","먹통","부팅안됨",
+                "무한부팅","로고무한","재부팅반복","꺼졌다켜짐"
+        ));
+        put("배터리", List.of(
+                "충전","전지","배터리수명","배터리빨리닳",
+                "광탈","빨리 닳아","배터리소모","잔량튐",
+                "배터리부풀음","스웰링","팽창","배터리빵빵"
+        ));
+        put("소음", List.of(
+                "팬소음","냉각팬","쿨링","윙윙",
+                "잡음","지지직","찌직","삐소리",
+                "팬이상","쿨러소음","베어링소음","진동소음"
+        ));
+        put("충전", List.of("충전안됨","충전 안돼","충전 느림","충전 불량","충전 중단",
+                "케이블 인식","포트 헐거움","포트불량","c타입 불량","라이트닝 불량","접촉불량"));
+        put("발열", List.of("과열","뜨거움","열남","고온","온도 높음","과열로 종료"));
+        put("카메라", List.of("카메라안됨","초점불가","흐림","번짐","카메라오류"));
+        put("스피커", List.of("소리안남","소리작음","먹통","울림","왜곡"));
     }};
 
     private static final Set<String> JOSA = Set.of(
@@ -156,7 +193,7 @@ public class EstimationService {
             String nk = TextNormalizer.normalize(kw);
             if (nk.isBlank()) continue;
 
-            boolean hit = contains(normText, nk);
+            boolean hit = flexibleHit(normText, nk);
             if (!hit) {
                 for (String token : nk.split(" ")) {
                     if (token.length() < 2) continue;
@@ -178,10 +215,6 @@ public class EstimationService {
 
         int[] est = TextNormalizer.parseEstimateRange(rule.getEstimateRaw());
         return new Match(rule, matched, score, est);
-    }
-
-    private boolean contains(String text, String kw) {
-        return text.contains(kw) || text.replace(" ", "").contains(kw.replace(" ", ""));
     }
 
     private record Match(Estimation rule, List<String> matched, int score, int[] estimate) {}

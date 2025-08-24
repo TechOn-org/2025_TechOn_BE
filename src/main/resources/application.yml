@@ -25,4 +25,5 @@ app:
     base-url: https://apis.data.go.kr/B553077/api/open/sdsc2
     rows: 100
 server:
+  address: 0.0.0.0
   port: 8080

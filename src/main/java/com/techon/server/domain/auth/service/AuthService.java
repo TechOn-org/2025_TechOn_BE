@@ -17,16 +17,16 @@ public class AuthService {
 
     @Transactional
     public AuthDtos.AuthResponse signup(AuthDtos.SignupRequest req){
-        if (req.userId()==null || req.userId().isBlank() ||
+        if (req.username()==null || req.username().isBlank() ||
                 req.nickname()==null || req.nickname().isBlank() ||
                 req.password()==null || req.password().isBlank()) {
             return AuthDtos.AuthResponse.fail("필수값 누락");
         }
-        if (repo.existsByUsername(req.userId())) {
+        if (repo.existsByUsername(req.username())) {
             return AuthDtos.AuthResponse.fail("이미 사용 중인 아이디");
         }
         UserAccount u = UserAccount.builder()
-                .username(req.userId().trim())
+                .username(req.username().trim())
                 .nickname(req.nickname().trim())
                 .passwordHash(encoder.encode(req.password()))
                 .build();
